@@ -1,4 +1,5 @@
 import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import App from "../App";
 
 describe("App", () => {
@@ -34,6 +35,19 @@ describe("App", () => {
     ).toBeInTheDocument();
   });
 
+  it("renders a dedicated IT consulting section", () => {
+    render(<App />);
+
+    expect(
+      screen.getByRole("heading", {
+        name: /консультационные услуги в сфере it/i
+      })
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(/подключаемся как технический партнёр/i)
+    ).toBeInTheDocument();
+  });
+
   it("renders a contact form with the required fields", () => {
     render(<App />);
 
@@ -44,5 +58,39 @@ describe("App", () => {
     expect(
       screen.getByRole("button", { name: /запланировать разговор/i })
     ).toBeInTheDocument();
+  });
+
+  it("submits the contact form to the n8n webhook", async () => {
+    const user = userEvent.setup();
+    const fetchMock = vi.fn().mockResolvedValue({ ok: true });
+    vi.stubGlobal("fetch", fetchMock);
+
+    render(<App />);
+
+    await user.type(screen.getByLabelText(/ваше имя/i), "Михаил");
+    await user.type(screen.getByLabelText(/компания/i), "Dada Development");
+    await user.type(screen.getByLabelText(/контакт/i), "@mikhail");
+    await user.type(screen.getByLabelText(/кратко о задаче/i), "Нужен новый продукт");
+    await user.click(
+      screen.getByRole("button", { name: /запланировать разговор/i })
+    );
+
+    expect(fetchMock).toHaveBeenCalledWith(
+      "https://n8n.dada-tuda.ru/webhook/contacts-webhook",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          name: "Михаил",
+          company: "Dada Development",
+          contact: "@mikhail",
+          projectBrief: "Нужен новый продукт"
+        })
+      }
+    );
+
+    vi.unstubAllGlobals();
   });
 });

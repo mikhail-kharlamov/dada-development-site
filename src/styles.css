@@ -219,6 +219,11 @@ button {
   gap: 40px;
 }
 
+.hero__copy,
+.hero__visual {
+  min-width: 0;
+}
+
 .eyebrow {
   display: inline-flex;
   align-items: center;
@@ -252,6 +257,8 @@ button {
 .hero h1 {
   max-width: 10ch;
   font-size: clamp(3.2rem, 8vw, 6.9rem);
+  overflow-wrap: anywhere;
+  hyphens: auto;
 }
 
 .hero__lead,
@@ -420,6 +427,65 @@ button {
 .why-grid {
   display: grid;
   gap: 18px;
+}
+
+.section--consulting {
+  padding-top: 24px;
+}
+
+.consulting-panel {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(320px, 0.9fr);
+  gap: 20px;
+  padding: 34px;
+  border-radius: 36px;
+  border: 1px solid rgba(255, 255, 255, 0.48);
+  background:
+    radial-gradient(circle at 0% 0%, rgba(196, 79, 43, 0.12), transparent 28%),
+    linear-gradient(140deg, rgba(255, 250, 244, 0.82), rgba(232, 241, 239, 0.72));
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(20px);
+}
+
+.consulting-panel__copy h2 {
+  margin-top: 18px;
+  margin-bottom: 18px;
+  font-family:
+    "Iowan Old Style",
+    "Palatino Linotype",
+    serif;
+  font-size: clamp(2.5rem, 5.6vw, 4.8rem);
+  line-height: 0.98;
+  letter-spacing: -0.04em;
+}
+
+.consulting-panel__lead {
+  color: var(--text);
+  font-size: 1.14rem;
+  line-height: 1.7;
+}
+
+.consulting-panel__grid {
+  display: grid;
+  gap: 18px;
+}
+
+.consulting-card {
+  padding: 26px;
+  border-radius: 28px;
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.56);
+}
+
+.consulting-card h3 {
+  margin: 0 0 14px;
+  font-size: 1.4rem;
+}
+
+.consulting-card p {
+  margin: 0;
+  color: var(--text-soft);
+  line-height: 1.65;
 }
 
 .services-grid {
@@ -613,6 +679,21 @@ button {
   min-height: 140px;
 }
 
+.form-status {
+  min-height: 24px;
+  margin: 0;
+  font-size: 0.92rem;
+  line-height: 1.4;
+}
+
+.form-status--success {
+  color: var(--accent-alt);
+}
+
+.form-status--error {
+  color: var(--accent);
+}
+
 .contact-form input:focus,
 .contact-form textarea:focus,
 .ghost-button:focus-visible,
@@ -646,6 +727,7 @@ button {
 
   .hero,
   .case-feature,
+  .consulting-panel,
   .contact-card,
   .services-grid,
   .process-grid,

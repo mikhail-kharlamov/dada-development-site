@@ -9,6 +9,7 @@ import type {
 
 export const navItems: NavItem[] = [
   { id: "services", label: "Услуги" },
+  { id: "consulting", label: "Консалтинг" },
   { id: "cases", label: "Кейсы" },
   { id: "process", label: "Процесс" },
   { id: "faq", label: "FAQ" },

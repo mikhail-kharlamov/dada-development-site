@@ -19,6 +19,10 @@ type ContactFormState = {
   projectBrief: string;
 };
 
+type ContactSubmitState = "idle" | "submitting" | "success" | "error";
+
+const contactWebhookUrl = "https://n8n.dada-tuda.ru/webhook/contacts-webhook";
+
 const initialFormState: ContactFormState = {
   name: "",
   company: "",
@@ -29,13 +33,35 @@ const initialFormState: ContactFormState = {
 export default function App() {
   const [formState, setFormState] = useState<ContactFormState>(initialFormState);
   const [activeFaqId, setActiveFaqId] = useState<string>(faqItems[0].id);
+  const [submitState, setSubmitState] = useState<ContactSubmitState>("idle");
 
   const scrollToContact = () => {
     document.getElementById("contact")?.scrollIntoView({ behavior: "smooth", block: "start" });
   };
 
-  const handleFormSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const handleFormSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+
+    setSubmitState("submitting");
+
+    try {
+      const response = await fetch(contactWebhookUrl, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(formState)
+      });
+
+      if (!response.ok) {
+        throw new Error("Contact webhook request failed");
+      }
+
+      setSubmitState("success");
+      setFormState(initialFormState);
+    } catch {
+      setSubmitState("error");
+    }
   };
 
   if (featuredCase === undefined) {
@@ -137,6 +163,46 @@ export default function App() {
                 <strong>{service.outcome}</strong>
               </article>
             ))}
+          </div>
+        </section>
+
+        <section className="section section--consulting" id="consulting">
+          <div className="consulting-panel">
+            <div className="consulting-panel__copy">
+              <span className="eyebrow">IT-консалтинг</span>
+              <h2>Консультационные услуги в сфере IT</h2>
+              <p className="consulting-panel__lead">
+                Подключаемся как технический партнёр, когда бизнесу нужно не
+                только написать код, но и понять, что именно стоит строить, как
+                это запускать и куда не стоит тратить бюджет.
+              </p>
+              <p>
+                Консультируем по архитектуре, запуску новых продуктов, выбору
+                технологического подхода, автоматизации процессов, интеграциям,
+                data-сценариям и общему направлению цифрового развития.
+              </p>
+            </div>
+
+            <div className="consulting-panel__grid">
+              <article className="consulting-card">
+                <h3>Когда полезно</h3>
+                <p>
+                  Если проект ещё не оформлен в чёткое ТЗ, если команда
+                  сомневается в архитектуре, если нужен внешний взгляд на
+                  автоматизацию или если нужно быстро понять, как двигаться в
+                  сторону продукта, AI или внутренних систем.
+                </p>
+              </article>
+
+              <article className="consulting-card">
+                <h3>Что даём на выходе</h3>
+                <p>
+                  Понятную картину по рискам, вариантам реализации, объёму
+                  решения, приоритетам и следующему шагу. Без воды и без
+                  абстрактных “digital-советов”.
+                </p>
+              </article>
+            </div>
           </div>
         </section>
 
@@ -344,8 +410,18 @@ export default function App() {
                 />
               </label>
               <button className="primary-button primary-button--full" type="submit">
-                Запланировать разговор
+                {submitState === "submitting"
+                  ? "Отправляем..."
+                  : "Запланировать разговор"}
               </button>
+              <p className={`form-status form-status--${submitState}`} aria-live="polite">
+                {submitState === "success"
+                  ? "Заявка отправлена. Вернёмся к вам с ответом."
+                  : null}
+                {submitState === "error"
+                  ? "Не удалось отправить заявку. Попробуйте ещё раз или свяжитесь напрямую."
+                  : null}
+              </p>
             </form>
           </div>
         </section>
