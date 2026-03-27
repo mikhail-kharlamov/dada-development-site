@@ -212,16 +212,22 @@ button {
 }
 
 .hero {
+  position: relative;
   min-height: calc(100vh - 110px);
-  display: grid;
-  grid-template-columns: minmax(0, 1.05fr) minmax(320px, 0.95fr);
-  align-items: center;
-  gap: 40px;
+  padding-top: 40px;
+  padding-right: min(40vw, 520px);
+  display: block;
 }
 
 .hero__copy,
 .hero__visual {
   min-width: 0;
+}
+
+.hero__copy {
+  position: relative;
+  z-index: 2;
+  max-width: 860px;
 }
 
 .eyebrow {
@@ -255,8 +261,8 @@ button {
 }
 
 .hero h1 {
-  max-width: 10ch;
-  font-size: clamp(3.2rem, 8vw, 6.9rem);
+  max-width: 7.2ch;
+  font-size: clamp(3.2rem, 7vw, 6.2rem);
   overflow-wrap: anywhere;
   hyphens: auto;
 }
@@ -310,13 +316,17 @@ button {
 }
 
 .hero__visual {
-  position: relative;
-  min-height: 620px;
+  position: absolute;
+  right: 0;
+  bottom: 36px;
+  width: min(42vw, 760px);
+  min-height: 430px;
   border-radius: var(--radius-xl);
   background:
     linear-gradient(160deg, rgba(29, 42, 56, 0.95) 0%, rgba(15, 118, 110, 0.88) 100%);
   box-shadow: var(--shadow);
   overflow: hidden;
+  z-index: 1;
 }
 
 .hero-grid {
@@ -356,20 +366,20 @@ button {
 }
 
 .signal-card--large {
-  top: 62px;
-  left: 46px;
+  top: 42px;
+  left: 42px;
   width: 290px;
 }
 
 .signal-card--stacked {
-  right: 36px;
-  top: 188px;
+  right: 28px;
+  top: 220px;
   width: 250px;
 }
 
 .signal-card--floating {
-  left: 120px;
-  bottom: 68px;
+  left: 86px;
+  bottom: 34px;
   width: 220px;
 }
 
@@ -435,7 +445,7 @@ button {
 
 .consulting-panel {
   display: grid;
-  grid-template-columns: minmax(0, 1.1fr) minmax(320px, 0.9fr);
+  grid-template-columns: 1fr;
   gap: 20px;
   padding: 34px;
   border-radius: 36px;
@@ -457,6 +467,9 @@ button {
   font-size: clamp(2.5rem, 5.6vw, 4.8rem);
   line-height: 0.98;
   letter-spacing: -0.04em;
+  max-width: 11ch;
+  overflow-wrap: anywhere;
+  hyphens: auto;
 }
 
 .consulting-panel__lead {
@@ -467,6 +480,7 @@ button {
 
 .consulting-panel__grid {
   display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 18px;
 }
 
@@ -585,11 +599,13 @@ button {
 }
 
 .section--dark {
+  padding: 86px 42px;
   border-radius: 40px;
   background:
     radial-gradient(circle at 20% 0%, rgba(196, 79, 43, 0.14), transparent 24%),
     linear-gradient(135deg, #171922 0%, #1f2937 100%);
   color: var(--inverse);
+  overflow: hidden;
 }
 
 .section-heading--inverse p,
@@ -727,7 +743,6 @@ button {
 
   .hero,
   .case-feature,
-  .consulting-panel,
   .contact-card,
   .services-grid,
   .process-grid,
@@ -739,9 +754,16 @@ button {
 
   .hero {
     padding-top: 44px;
+    padding-right: 0;
+    display: grid;
+    gap: 26px;
   }
 
   .hero__visual {
+    position: relative;
+    right: auto;
+    bottom: auto;
+    width: 100%;
     min-height: 520px;
   }
 }
@@ -768,6 +790,7 @@ button {
 
   .hero h1 {
     max-width: none;
+    font-size: clamp(2.9rem, 16vw, 4.8rem);
   }
 
   .hero__actions,
@@ -777,7 +800,7 @@ button {
   }
 
   .hero__visual {
-    min-height: 420px;
+    min-height: 360px;
   }
 
   .signal-card--large {
@@ -803,6 +826,35 @@ button {
   .section-heading h2,
   .contact-card__copy h2 {
     line-height: 1.02;
+    overflow-wrap: anywhere;
+    hyphens: auto;
+  }
+
+  .consulting-panel {
+    padding: 24px 18px;
+  }
+
+  .consulting-panel__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .consulting-panel__copy h2 {
+    max-width: 9ch;
+    font-size: clamp(2.2rem, 11vw, 3.6rem);
+  }
+
+  .section--dark {
+    padding: 54px 18px;
+    border-radius: 30px;
+  }
+
+  .section--dark .section-heading h2 {
+    max-width: 8ch;
+    font-size: clamp(2.4rem, 14vw, 3.9rem);
+  }
+
+  .why-card {
+    padding: 22px 18px;
   }
 
   .contact-form {
